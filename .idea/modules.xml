@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Algorithms - theory and practice/Algorithms - theory and practice.iml" filepath="$PROJECT_DIR$/Algorithms - theory and practice/Algorithms - theory and practice.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Algorithms - theory and practice/Data Structures/Data Structures.iml" filepath="$PROJECT_DIR$/Algorithms - theory and practice/Data Structures/Data Structures.iml" />
       <module fileurl="file://$PROJECT_DIR$/Algorithms - theory and practice/Methods/Methods.iml" filepath="$PROJECT_DIR$/Algorithms - theory and practice/Methods/Methods.iml" />
       <module fileurl="file://$PROJECT_DIR$/Stepic.iml" filepath="$PROJECT_DIR$/Stepic.iml" />
     </modules>
