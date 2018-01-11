@@ -1,4 +1,4 @@
-package org.stepic.greedyAlgorithms.task1.solution.first;
+package org.stepic.greedyAlgorithms.intro.task1;
 
 import java.util.ArrayList;
 import java.util.Comparator;

@@ -1,4 +1,4 @@
-package org.stepic.greedyAlgorithms.task2.solution.first;
+package org.stepic.greedyAlgorithms.intro.task2;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
