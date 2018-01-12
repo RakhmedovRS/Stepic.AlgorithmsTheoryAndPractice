@@ -6,7 +6,7 @@ import java.util.Scanner;
 import java.util.Stack;
 
 /**
- * @author sbt-rakhmedov-rs
+ * @author rassoll
  * @created 11.01.2018
  * @$Author$
  * @$Revision$
