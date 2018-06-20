@@ -11,11 +11,14 @@ import java.util.Scanner;
  */
 public class LargestSequence
 {
+	private static int valuesCount;
+	private static int[] values;
+
 	public static void main(String[] args)
 	{
 		Scanner scanner = new Scanner(System.in);
-		int valuesCount = scanner.nextInt();
-		int[] values = new int[valuesCount];
+		valuesCount = scanner.nextInt();
+		values = new int[valuesCount];
 
 		for (int i = 0; i < values.length; i++)
 		{
@@ -24,20 +27,20 @@ public class LargestSequence
 
 		Sequence[] sequences = new Sequence[valuesCount];
 		int sequencesCounter = 0;
-		sequences[sequencesCounter++] = new Sequence(valuesCount).add(values[0]);
+		sequences[sequencesCounter++] = new Sequence(valuesCount).add(0);
 		int minValue = values[0];
 		int maxValue = values[0];
 		for (int i = 1; i < valuesCount; i++)
 		{
 			if (values[i] < minValue)
 			{
-				sequences[i] = new Sequence(valuesCount).add(values[i]);
+				sequences[i] = new Sequence(valuesCount).add(i);
 				minValue = values[i];
 			}
 			else if (values[i] >= maxValue)
 			{
 				Sequence newSequence = new Sequence(getLargestSequence(sequences).getNumbers());
-				newSequence.add(values[i]);
+				newSequence.add(i);
 				sequences[sequencesCounter++] = newSequence;
 				maxValue = values[i];
 			}
@@ -61,7 +64,7 @@ public class LargestSequence
 				}
 
 				Sequence newSequence = new Sequence(lessMaxValue.getNumbers());
-				newSequence.add(values[i]);
+				newSequence.add(i);
 
 				for (int k = 0; k < valuesCount; k++)
 				{
@@ -132,15 +135,15 @@ public class LargestSequence
 
 		System.out.println(largestSequence.getElementsCount() + 1);
 		StringBuilder stringBuilder = new StringBuilder();
-		for (int value : largestSequence.getNumbers())
+		for (int index : largestSequence.getNumbers())
 		{
-			if (value == Integer.MIN_VALUE)
+			if (index == Integer.MIN_VALUE)
 			{
 				break;
 			}
 			else
 			{
-				stringBuilder.append(value);
+				stringBuilder.append(index);
 				stringBuilder.append(" ");
 			}
 		}
@@ -157,8 +160,8 @@ public class LargestSequence
 		Sequence(int size)
 		{
 			numbers = new int[size];
-			minValue = 0;
-			maxValue = 0;
+			minValue = Integer.MAX_VALUE;
+			maxValue = Integer.MIN_VALUE;
 			elementsCounter = 0;
 			fillNumbers();
 		}
@@ -201,18 +204,18 @@ public class LargestSequence
 			return maxValue;
 		}
 
-		Sequence add(int value)
+		Sequence add(int index)
 		{
-			numbers[elementsCounter] = value;
+			numbers[elementsCounter] = index;
 
-			if (value < minValue)
+			if (values[index] < minValue)
 			{
-				minValue = value;
+				minValue = values[index];
 			}
 
-			if (value > maxValue)
+			if (values[index] > maxValue)
 			{
-				maxValue = value;
+				maxValue = values[index];
 			}
 
 			return this;
