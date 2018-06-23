@@ -106,29 +106,7 @@ public class Main
 				maxLength = list.size();
 			}
 		}
-
 		return largestList;
-	}
-
-	private static List<Integer> getLongestList(List<List<Integer>> inputCollection)
-	{
-		List<Integer> longestList = null;
-		for (List<Integer> list : inputCollection)
-		{
-			if (longestList == null)
-			{
-				longestList = list;
-			}
-			else
-			{
-				if (list.size() > longestList.size())
-				{
-					longestList = list;
-				}
-			}
-		}
-
-		return longestList;
 	}
 
 	private static void removeListByLength(List<List<Integer>> inputCollection, int length)
@@ -146,7 +124,7 @@ public class Main
 
 	private static void printResults(List<List<Integer>> results)
 	{
-		List<Integer> largestList = getLongestList(results);
+		List<Integer> largestList = getLargestList(results);
 		StringBuilder stringBuilder = new StringBuilder();
 
 		if (directOrder)
@@ -173,15 +151,10 @@ public class Main
 	public static void main(String[] args)
 	{
 		inputValues = getInputValues();
-		List<List<Integer>> results = new ArrayList<>();
-
+		long startTime = System.currentTimeMillis();
+		List<List<Integer>> results = new ArrayList<>(inputValues.length);
 		for (int i = 0; i < inputValues.length; i++)
 		{
-			if (i == 6)
-			{
-				String a = "a";
-			}
-
 			if (isSmallestOfAllEndCandidates(results, inputValues[i]))
 			{
 				List<Integer> newList = new ArrayList<>();
@@ -192,17 +165,18 @@ public class Main
 			{
 				List<Integer> newList = new ArrayList<>(getLargestList(results));
 				newList.add(i);
-				results.add(newList);
+				results.add(0, newList);
 			}
 			else
 			{
 				List<Integer> newList = new ArrayList<>(getLargestList(results, inputValues[i]));
 				newList.add(i);
 				removeListByLength(results, newList.size());
-				results.add(newList);
+				results.add(0, newList);
 			}
 		}
 
 		printResults(results);
+		System.out.println(System.currentTimeMillis() - startTime);
 	}
 }
