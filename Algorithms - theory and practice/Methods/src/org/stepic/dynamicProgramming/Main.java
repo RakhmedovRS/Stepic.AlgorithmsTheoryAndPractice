@@ -2,6 +2,7 @@ package org.stepic.dynamicProgramming;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Scanner;
 
 public class Main
@@ -92,17 +93,14 @@ public class Main
 	private static List<Integer> getLargestList(List<List<Integer>> inputCollection, int largestValue)
 	{
 		List<Integer> largestList = null;
-		int maxValue = Integer.MIN_VALUE;
 		int maxLength = Integer.MIN_VALUE;
 		for (List<Integer> list : inputCollection)
 		{
 			int largestListElement = inputValues[list.get(list.size() - 1)];
-			if (largestListElement >= maxValue
-				&& largestListElement <= largestValue
+			if (largestListElement <= largestValue
 				&& list.size() > maxLength)
 			{
 				largestList = list;
-				maxValue = largestListElement;
 				maxLength = list.size();
 			}
 		}
@@ -111,13 +109,14 @@ public class Main
 
 	private static void removeListByLength(List<List<Integer>> inputCollection, int length)
 	{
-		for (int i = 0; i < inputCollection.size(); i++)
-		{
-			List<Integer> list = inputCollection.get(i);
+		ListIterator<List<Integer>> listIterator = inputCollection.listIterator();
 
+		while (listIterator.hasNext())
+		{
+			List<Integer> list = listIterator.next();
 			if (list != null && list.size() == length)
 			{
-				inputCollection.remove(list);
+				listIterator.remove();
 			}
 		}
 	}
@@ -137,9 +136,11 @@ public class Main
 		}
 		else
 		{
-			for (int i = largestList.size() - 1; i >= 0; i--)
+			ListIterator<Integer> listIterator = largestList.listIterator(largestList.size());
+
+			while (listIterator.hasPrevious())
 			{
-				stringBuilder.append(inputValues.length - largestList.get(i));
+				stringBuilder.append(inputValues.length - listIterator.previous());
 				stringBuilder.append(" ");
 			}
 		}
@@ -177,6 +178,6 @@ public class Main
 		}
 
 		printResults(results);
-		System.out.println(System.currentTimeMillis() - startTime);
+		System.out.println(String.format("Time spend: %s ms", System.currentTimeMillis() - startTime));
 	}
 }
