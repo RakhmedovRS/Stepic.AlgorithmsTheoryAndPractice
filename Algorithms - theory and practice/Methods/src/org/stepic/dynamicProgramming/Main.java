@@ -8,7 +8,8 @@ import java.util.Scanner;
 public class Main
 {
 	private static int[] inputValues;
-	private static boolean directOrder = false;
+	private static int minValue = Integer.MAX_VALUE;
+	private static int maxValue = Integer.MIN_VALUE;
 
 	private static int[] getInputValues()
 	{
@@ -16,57 +17,35 @@ public class Main
 
 		int elementsNumber = scanner.nextInt();
 		int[] input = new int[elementsNumber];
-		if (directOrder)
+
+		for (int i = elementsNumber - 1; i >= 0; i--)
 		{
-			for (int i = 0; i < elementsNumber; i++)
-			{
-				input[i] = scanner.nextInt();
-			}
-		}
-		else
-		{
-			for (int i = elementsNumber - 1; i >= 0; i--)
-			{
-				input[i] = scanner.nextInt();
-			}
+			input[i] = scanner.nextInt();
 		}
 
+		maxValue = input[0];
 		return input;
 	}
 
-	private static boolean isSmallestOfAllEndCandidates(List<List<Integer>> inputCollection, int inputValue)
+	private static void restoreMinAndMax(List<List<Integer>> inputCollection)
 	{
-		int minValue = Integer.MAX_VALUE;
+		minValue = Integer.MAX_VALUE;
+		maxValue = Integer.MIN_VALUE;
 		for (List<Integer> list : inputCollection)
 		{
 			if (list != null)
 			{
-				int index = list.get(list.size() - 1);
+				int index = list.listIterator(list.size()).previous();
 				if (minValue > inputValues[index])
 				{
 					minValue = inputValues[index];
 				}
-			}
-		}
-
-		return inputValue < minValue;
-	}
-
-	private static boolean isLargestOfAllEndCandidates(List<List<Integer>> inputCollection, int inputValue)
-	{
-		int maxValue = Integer.MIN_VALUE;
-		for (List<Integer> list : inputCollection)
-		{
-			if (list != null)
-			{
-				int index = list.get(list.size() - 1);
 				if (inputValues[index] > maxValue)
 				{
 					maxValue = inputValues[index];
 				}
 			}
 		}
-		return inputValue > maxValue;
 	}
 
 	private static List<Integer> getLargestList(List<List<Integer>> inputCollection)
@@ -96,7 +75,7 @@ public class Main
 		int maxLength = Integer.MIN_VALUE;
 		for (List<Integer> list : inputCollection)
 		{
-			int largestListElement = inputValues[list.get(list.size() - 1)];
+			int largestListElement = inputValues[list.listIterator(list.size()).previous()];
 			if (largestListElement <= largestValue
 				&& list.size() > maxLength)
 			{
@@ -126,23 +105,12 @@ public class Main
 		List<Integer> largestList = getLargestList(results);
 		StringBuilder stringBuilder = new StringBuilder();
 
-		if (directOrder)
-		{
-			for (int i = 0; i < largestList.size(); i++)
-			{
-				stringBuilder.append(inputValues.length - largestList.get(i));
-				stringBuilder.append(" ");
-			}
-		}
-		else
-		{
-			ListIterator<Integer> listIterator = largestList.listIterator(largestList.size());
+		ListIterator<Integer> listIterator = largestList.listIterator(largestList.size());
 
-			while (listIterator.hasPrevious())
-			{
-				stringBuilder.append(inputValues.length - listIterator.previous());
-				stringBuilder.append(" ");
-			}
+		while (listIterator.hasPrevious())
+		{
+			stringBuilder.append(inputValues.length - listIterator.previous());
+			stringBuilder.append(" ");
 		}
 
 		System.out.println(largestList.size());
@@ -156,24 +124,27 @@ public class Main
 		List<List<Integer>> results = new ArrayList<>(inputValues.length);
 		for (int i = 0; i < inputValues.length; i++)
 		{
-			if (isSmallestOfAllEndCandidates(results, inputValues[i]))
+			if (inputValues[i] < minValue)
 			{
 				List<Integer> newList = new ArrayList<>();
 				newList.add(i);
 				results.add(newList);
+				minValue = inputValues[i];
 			}
-			else if (isLargestOfAllEndCandidates(results, inputValues[i]))
+			else if (inputValues[i] > maxValue)
 			{
 				List<Integer> newList = new ArrayList<>(getLargestList(results));
 				newList.add(i);
-				results.add(0, newList);
+				results.add(newList);
+				maxValue = inputValues[i];
 			}
 			else
 			{
 				List<Integer> newList = new ArrayList<>(getLargestList(results, inputValues[i]));
 				newList.add(i);
 				removeListByLength(results, newList.size());
-				results.add(0, newList);
+				results.add(newList);
+				restoreMinAndMax(results);
 			}
 		}
 
