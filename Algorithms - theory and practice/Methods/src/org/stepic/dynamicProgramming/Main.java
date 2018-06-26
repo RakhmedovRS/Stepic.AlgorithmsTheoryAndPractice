@@ -1,15 +1,22 @@
 package org.stepic.dynamicProgramming;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main
 {
-	private static int[] inputValues;
+	private static int[] inputValues = getInputValues();
+	private static List<List<Integer>> results = new LinkedList<>();
 	private static int minValue = Integer.MAX_VALUE;
 	private static int maxValue = Integer.MIN_VALUE;
+	private static boolean needRestoreMax = false;
+	private static int counterRestoreMax = 0;
+	private static int counterGetLargestList1 = 0;
+	private static int counterGetLargestList2 = 0;
+	private static int counterRemoveListByLength = 0;
+	private static int counterRestoreMaxCall = 0;
+	private static int counterGetLargestList1Call = 0;
+	private static int counterGetLargestList2Call = 0;
+	private static int counterRemoveListByLengthCall = 0;
 
 	private static int[] getInputValues()
 	{
@@ -27,32 +34,34 @@ public class Main
 		return input;
 	}
 
-	private static void restoreMinAndMax(List<List<Integer>> inputCollection)
+	private static void restoreMax()
 	{
-		minValue = Integer.MAX_VALUE;
 		maxValue = Integer.MIN_VALUE;
-		for (List<Integer> list : inputCollection)
+
+		counterRestoreMaxCall++;
+		for (List<Integer> list : results)
 		{
+			counterRestoreMax++;
 			if (list != null)
 			{
 				int index = list.listIterator(list.size()).previous();
-				if (minValue > inputValues[index])
-				{
-					minValue = inputValues[index];
-				}
 				if (inputValues[index] > maxValue)
 				{
 					maxValue = inputValues[index];
 				}
 			}
 		}
+
+		needRestoreMax = false;
 	}
 
-	private static List<Integer> getLargestList(List<List<Integer>> inputCollection)
+	private static List<Integer> getLargestList()
 	{
 		List<Integer> largestList = null;
-		for (List<Integer> list : inputCollection)
+		counterGetLargestList1Call++;
+		for (List<Integer> list : results)
 		{
+			counterGetLargestList1++;
 			if (largestList == null)
 			{
 				largestList = list;
@@ -69,12 +78,15 @@ public class Main
 		return largestList;
 	}
 
-	private static List<Integer> getLargestList(List<List<Integer>> inputCollection, int largestValue)
+	private static List<Integer> getLargestList(int largestValue)
 	{
 		List<Integer> largestList = null;
 		int maxLength = Integer.MIN_VALUE;
-		for (List<Integer> list : inputCollection)
+
+		counterGetLargestList2Call++;
+		for (List<Integer> list : results)
 		{
+			counterGetLargestList2++;
 			int largestListElement = inputValues[list.listIterator(list.size()).previous()];
 			if (largestListElement <= largestValue
 				&& list.size() > maxLength)
@@ -86,23 +98,29 @@ public class Main
 		return largestList;
 	}
 
-	private static void removeListByLength(List<List<Integer>> inputCollection, int length)
+	private static void removeListByLength(int length)
 	{
-		ListIterator<List<Integer>> listIterator = inputCollection.listIterator();
+		ListIterator<List<Integer>> listIterator = results.listIterator();
 
+		counterRemoveListByLengthCall++;
 		while (listIterator.hasNext())
 		{
+			counterRemoveListByLength++;
 			List<Integer> list = listIterator.next();
 			if (list != null && list.size() == length)
 			{
+				if (list.listIterator(list.size()).previous() == maxValue)
+				{
+					needRestoreMax = true;
+				}
 				listIterator.remove();
 			}
 		}
 	}
 
-	private static void printResults(List<List<Integer>> results)
+	private static void printResults()
 	{
-		List<Integer> largestList = getLargestList(results);
+		List<Integer> largestList = getLargestList();
 		StringBuilder stringBuilder = new StringBuilder();
 
 		ListIterator<Integer> listIterator = largestList.listIterator(largestList.size());
@@ -119,36 +137,42 @@ public class Main
 
 	public static void main(String[] args)
 	{
-		inputValues = getInputValues();
 		long startTime = System.currentTimeMillis();
-		List<List<Integer>> results = new ArrayList<>(inputValues.length);
 		for (int i = 0; i < inputValues.length; i++)
 		{
 			if (inputValues[i] < minValue)
 			{
-				List<Integer> newList = new ArrayList<>();
+				List<Integer> newList = new LinkedList<>();
 				newList.add(i);
 				results.add(newList);
 				minValue = inputValues[i];
 			}
 			else if (inputValues[i] > maxValue)
 			{
-				List<Integer> newList = new ArrayList<>(getLargestList(results));
+				List<Integer> newList = new LinkedList<>();
+				newList.addAll(getLargestList());
 				newList.add(i);
 				results.add(newList);
 				maxValue = inputValues[i];
 			}
 			else
 			{
-				List<Integer> newList = new ArrayList<>(getLargestList(results, inputValues[i]));
+				List<Integer> newList = new LinkedList<>(getLargestList(inputValues[i]));
 				newList.add(i);
-				removeListByLength(results, newList.size());
+				removeListByLength(newList.size());
 				results.add(newList);
-				restoreMinAndMax(results);
+				if (needRestoreMax)
+				{
+					restoreMax();
+				}
 			}
 		}
 
-		printResults(results);
+		printResults();
 		System.out.println(String.format("Time spend: %s ms", System.currentTimeMillis() - startTime));
+		System.out.println(String.format("counterRestoreMax: %s , calls: %s", counterRestoreMax, counterRestoreMaxCall));
+		System.out.println(String.format("counterGetLargestList1: %s , calls: %s", counterGetLargestList1, counterGetLargestList1Call));
+		System.out.println(String.format("counterGetLargestList2: %s , calls: %s", counterGetLargestList2, counterGetLargestList2Call));
+		System.out.println(String.format("counterRemoveListByLength: %s , calls: %s", counterRemoveListByLength, counterRemoveListByLengthCall));
 	}
 }
