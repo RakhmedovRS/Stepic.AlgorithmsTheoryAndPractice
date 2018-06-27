@@ -12,6 +12,14 @@ public class Main
 	private static int maxValue = Integer.MIN_VALUE;
 	private static int[] inputValues = getInputValues();
 	private static boolean needRestoreMax = false;
+	private static int counterRestoreMax = 0;
+	private static int counterRestoreMaxCall = 0;
+	private static int counterGetLargestList = 0;
+	private static int counterGetLargestListCall = 0;
+	private static int counterRemoveListByLength = 0;
+	private static int counterRemoveListByLengthCall = 0;
+	private static int counterAdd = 0;
+	private static int counterAddCall = 0;
 
 	private static int[] getInputValues()
 	{
@@ -33,8 +41,10 @@ public class Main
 	{
 		maxValue = Integer.MIN_VALUE;
 
+		counterRestoreMaxCall++;
 		for (List<Integer> list : results)
 		{
+			counterRestoreMax++;
 			if (list != null)
 			{
 				int index = list.listIterator(list.size()).previous();
@@ -51,6 +61,7 @@ public class Main
 	@SuppressWarnings("unchecked")
 	private static void addToResults(ArrayList<Integer> newList)
 	{
+		counterAddCall++;
 		Object[] oResults = results.toArray();
 
 		if (oResults.length == 0 || ((ArrayList<Integer>) oResults[0]).size() >= newList.size())
@@ -69,6 +80,7 @@ public class Main
 
 			while (left < right)
 			{
+				counterAdd++;
 				middle = (left + right) / 2;
 
 				if (newList.size() > ((ArrayList<Integer>) oResults[middle]).size())
@@ -107,8 +119,11 @@ public class Main
 		List<Integer> largestList = null;
 		int maxLength = Integer.MIN_VALUE;
 
+		counterGetLargestListCall++;
+
 		for (List<Integer> list : results)
 		{
+			counterGetLargestList++;
 			int largestListElement = inputValues[list.listIterator(list.size()).previous()];
 			if (largestListElement <= largestValue
 				&& list.size() > maxLength)
@@ -123,6 +138,7 @@ public class Main
 	@SuppressWarnings("unchecked")
 	private static void removeListByLength(int length)
 	{
+		counterRemoveListByLengthCall++;
 		Object[] oResults = results.toArray();
 
 		int left = 0;
@@ -131,6 +147,7 @@ public class Main
 
 		while (left < right)
 		{
+			counterRemoveListByLength++;
 			middle = (left + right) / 2;
 
 			if (length > ((ArrayList<Integer>) oResults[middle]).size())
@@ -160,7 +177,7 @@ public class Main
 		ArrayList<Integer> list;
 		while (middle < results.size() && results.get(middle).size() != length + 1)
 		{
-
+			counterRemoveListByLength++;
 			list = results.get(middle);
 			if (list.get(list.size() - 1) == maxValue)
 			{
@@ -222,5 +239,9 @@ public class Main
 
 		printResults();
 		System.out.println(String.format("Time spend: %s ms", System.currentTimeMillis() - startTime));
+		System.out.println(String.format("counterAdd: %s , calls: %s", counterAdd, counterAddCall));
+		System.out.println(String.format("counterRestoreMax: %s , calls: %s", counterRestoreMax, counterRestoreMaxCall));
+		System.out.println(String.format("counterGetLargestList: %s , calls: %s", counterGetLargestList, counterGetLargestListCall));
+		System.out.println(String.format("counterRemoveListByLength: %s , calls: %s", counterRemoveListByLength, counterRemoveListByLengthCall));
 	}
 }
