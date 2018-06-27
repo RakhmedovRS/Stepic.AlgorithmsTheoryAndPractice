@@ -34,6 +34,7 @@ public class Main
 		}
 
 		maxValue = input[0];
+		scanner.close();
 		return input;
 	}
 
@@ -116,22 +117,28 @@ public class Main
 
 	private static List<Integer> getLargestList(int largestValue)
 	{
-		List<Integer> largestList = null;
-		int maxLength = Integer.MIN_VALUE;
-
 		counterGetLargestListCall++;
 
-		for (List<Integer> list : results)
+		List<Integer> largestList = null;
+		int length = Integer.MIN_VALUE;
+
+		ListIterator<ArrayList<Integer>> listIterator = results.listIterator(results.size());
+		while (listIterator.hasPrevious())
 		{
+			ArrayList<Integer> list = listIterator.previous();
 			counterGetLargestList++;
 			int largestListElement = inputValues[list.listIterator(list.size()).previous()];
-			if (largestListElement <= largestValue
-				&& list.size() > maxLength)
+			if (largestListElement <= largestValue)
 			{
+				if (length > list.size())
+				{
+					break;
+				}
 				largestList = list;
-				maxLength = list.size();
+				length = list.size();
 			}
 		}
+
 		return largestList;
 	}
 
