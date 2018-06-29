@@ -1,254 +1,95 @@
 package org.stepic.dynamicProgramming;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main
 {
-	private static ArrayList<ArrayList<Integer>> results = new ArrayList<>();
-	private static int minValue = Integer.MAX_VALUE;
-	private static int maxValue = Integer.MIN_VALUE;
-	private static int[] inputValues = getInputValues();
-	private static boolean needRestoreMax = false;
-	private static int counterRestoreMax = 0;
-	private static int counterRestoreMaxCall = 0;
-	private static int counterGetLargestList = 0;
-	private static int counterGetLargestListCall = 0;
-	private static int counterRemoveListByLength = 0;
-	private static int counterRemoveListByLengthCall = 0;
-	private static int counterAdd = 0;
-	private static int counterAddCall = 0;
+	private static int elementsNumber;
+	private static int lisSize = 0;
+	private static int[] inputValues;
+	private static int[] tail;
+	private static int[] pos;
+	private static int[] prev;
 
-	private static int[] getInputValues()
+	private static void fillArrays()
 	{
 		Scanner scanner = new Scanner(System.in);
 
-		int elementsNumber = scanner.nextInt();
-		int[] input = new int[elementsNumber];
+		elementsNumber = scanner.nextInt();
+		inputValues = new int[elementsNumber];
 
 		for (int i = elementsNumber - 1; i >= 0; i--)
 		{
-			input[i] = scanner.nextInt();
+			inputValues[i] = scanner.nextInt();
 		}
-
-		maxValue = input[0];
 		scanner.close();
-		return input;
+
+		tail = new int[elementsNumber + 1];
+		Arrays.fill(tail, Integer.MAX_VALUE);
+		tail[0] = Integer.MIN_VALUE;
+
+		pos = new int[inputValues.length + 1];
+		Arrays.fill(pos, 0);
+		pos[0] = -1;
+
+		prev = new int[inputValues.length + 1];
+		Arrays.fill(prev, -1);
 	}
 
-	private static void restoreMax()
+	private static int getPosition(int value)
 	{
-		maxValue = Integer.MIN_VALUE;
-
-		counterRestoreMaxCall++;
-		for (List<Integer> list : results)
+		int i;
+		for (i = 0; i < tail.length; i++)
 		{
-			counterRestoreMax++;
-			if (list != null)
+			if (value < tail[i])
 			{
-				int index = list.listIterator(list.size()).previous();
-				if (inputValues[index] > maxValue)
-				{
-					maxValue = inputValues[index];
-				}
+				break;
 			}
 		}
 
-		needRestoreMax = false;
+		return i;
 	}
 
-	@SuppressWarnings("unchecked")
-	private static void addToResults(ArrayList<Integer> newList)
+	private static void getLIS()
 	{
-		counterAddCall++;
-		Object[] oResults = results.toArray();
-
-		if (oResults.length == 0 || ((ArrayList<Integer>) oResults[0]).size() >= newList.size())
+		for (int i = 0; i < elementsNumber; i++)
 		{
-			results.add(0, newList);
-		}
-		else if (newList.size() >= ((ArrayList<Integer>) oResults[oResults.length - 1]).size())
-		{
-			results.add(newList);
-		}
-		else
-		{
-			int left = 0;
-			int right = oResults.length - 1;
-			int middle = (left + right) / 2;
+			int position = getPosition(inputValues[i]);
 
-			while (left < right)
+			if (tail[position - 1] <= inputValues[i] && inputValues[i] < tail[position])
 			{
-				counterAdd++;
-				middle = (left + right) / 2;
+				tail[position] = inputValues[i];
+				pos[position] = i;
+				prev[i] = pos[position - 1];
 
-				if (newList.size() > ((ArrayList<Integer>) oResults[middle]).size())
-				{
-					left = middle + 1;
-				}
-				else
-				{
-					right = middle - 1;
-				}
-			}
-
-			if (newList.size() < ((ArrayList<Integer>) oResults[left]).size())
-			{
-				results.add(left, newList);
-			}
-			else if ((newList.size() >= ((ArrayList<Integer>) oResults[left]).size())
-				&& (newList.size() <= ((ArrayList<Integer>) oResults[middle]).size()))
-			{
-				results.add(middle, newList);
-			}
-			else if ((newList.size() >= ((ArrayList<Integer>) oResults[middle]).size())
-				&& (newList.size() <= ((ArrayList<Integer>) oResults[right]).size()))
-			{
-				results.add(middle + 1, newList);
-			}
-			else
-			{
-				results.add(right + 1, newList);
+				lisSize = position > lisSize ? position : lisSize;
 			}
 		}
-	}
-
-	private static List<Integer> getLargestList(int largestValue)
-	{
-		counterGetLargestListCall++;
-
-		List<Integer> largestList = null;
-		int length = Integer.MIN_VALUE;
-
-		ListIterator<ArrayList<Integer>> listIterator = results.listIterator(results.size());
-		while (listIterator.hasPrevious())
-		{
-			ArrayList<Integer> list = listIterator.previous();
-			counterGetLargestList++;
-			int largestListElement = inputValues[list.listIterator(list.size()).previous()];
-			if (largestListElement <= largestValue)
-			{
-				if (length > list.size())
-				{
-					break;
-				}
-				largestList = list;
-				length = list.size();
-			}
-		}
-
-		return largestList;
-	}
-
-	@SuppressWarnings("unchecked")
-	private static void removeListByLength(int length)
-	{
-		counterRemoveListByLengthCall++;
-		Object[] oResults = results.toArray();
-
-		int left = 0;
-		int right = oResults.length - 1;
-		int middle = (left + right) / 2;
-
-		while (left < right)
-		{
-			counterRemoveListByLength++;
-			middle = (left + right) / 2;
-
-			if (length > ((ArrayList<Integer>) oResults[middle]).size())
-			{
-				left = middle + 1;
-			}
-			else
-			{
-				right = middle - 1;
-			}
-		}
-
-		if (length < ((ArrayList<Integer>) oResults[left]).size())
-		{
-			middle = left;
-		}
-		else if ((length >= ((ArrayList<Integer>) oResults[middle]).size())
-			&& (length <= ((ArrayList<Integer>) oResults[right]).size()))
-		{
-			middle++;
-		}
-		else if (length > ((ArrayList<Integer>) oResults[left]).size())
-		{
-			middle = right + 1;
-		}
-
-		ArrayList<Integer> list;
-		while (middle < results.size() && results.get(middle).size() != length + 1)
-		{
-			counterRemoveListByLength++;
-			list = results.get(middle);
-			if (list.get(list.size() - 1) == maxValue)
-			{
-				needRestoreMax = true;
-			}
-			results.remove(middle);
-		}
-	}
-
-	private static void printResults()
-	{
-		List<Integer> largestList = results.get(results.size() - 1);
-		StringBuilder stringBuilder = new StringBuilder();
-
-		ListIterator<Integer> listIterator = largestList.listIterator(largestList.size());
-
-		while (listIterator.hasPrevious())
-		{
-			stringBuilder.append(inputValues.length - listIterator.previous());
-			stringBuilder.append(" ");
-		}
-
-		System.out.println(largestList.size());
-		System.out.println(stringBuilder.toString());
 	}
 
 	public static void main(String[] args)
 	{
-		long startTime = System.currentTimeMillis();
-		for (int i = 0; i < inputValues.length; i++)
+		fillArrays();
+		getLIS();
+
+		StringBuilder stringBuilder = new StringBuilder();
+
+		int p = pos[lisSize];
+		while (true)
 		{
-			if (inputValues[i] < minValue)
+			if (p == -1)
 			{
-				ArrayList<Integer> newList = new ArrayList<>();
-				newList.add(i);
-				addToResults(newList);
-				minValue = inputValues[i];
+				break;
 			}
-			else if (inputValues[i] > maxValue)
-			{
-				ArrayList<Integer> newList = new ArrayList<>();
-				newList.addAll(results.get(results.size() - 1));
-				newList.add(i);
-				addToResults(newList);
-				maxValue = inputValues[i];
-			}
-			else
-			{
-				ArrayList<Integer> newList = new ArrayList<>(getLargestList(inputValues[i]));
-				newList.add(i);
-				removeListByLength(newList.size());
-				addToResults(newList);
-				if (needRestoreMax)
-				{
-					restoreMax();
-				}
-			}
+
+			stringBuilder.append(elementsNumber - p);
+			stringBuilder.append(" ");
+			p = prev[p];
 		}
 
-		printResults();
-		System.out.println(String.format("Time spend: %s ms", System.currentTimeMillis() - startTime));
-		System.out.println(String.format("counterAdd: %s , calls: %s", counterAdd, counterAddCall));
-		System.out.println(String.format("counterRestoreMax: %s , calls: %s", counterRestoreMax, counterRestoreMaxCall));
-		System.out.println(String.format("counterGetLargestList: %s , calls: %s", counterGetLargestList, counterGetLargestListCall));
-		System.out.println(String.format("counterRemoveListByLength: %s , calls: %s", counterRemoveListByLength, counterRemoveListByLengthCall));
+		System.out.println(lisSize);
+		System.out.println(stringBuilder.toString());
 	}
 }
+
