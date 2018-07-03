@@ -49,9 +49,9 @@ public class BackPack
 				for (int w = 1; w <= backpackCapacity; w++)
 				{
 					results[w][i] = results[w][i - 1];
-					if (ingots[i -1 ] <= w)
+					if (ingots[i - 1] <= w)
 					{
-						results[w][i] = max(results[w][i], results[w - ingots[i -1]][i - 1] + ingots[i -1]);
+						results[w][i] = max(results[w][i], results[w - ingots[i - 1]][i - 1] + ingots[i - 1]);
 					}
 				}
 			}
