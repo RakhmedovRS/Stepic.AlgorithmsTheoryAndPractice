@@ -3,7 +3,7 @@ package org.stepic.introduction.fibonacciNumbers.hugeFibonacci;
 import java.util.Scanner;
 
 /**
- * Даны целые числа 1≤n≤10181≤n≤1018 и 2≤m≤1052≤m≤105, необходимо найти остаток от деления nn-го числа Фибоначчи на mm.
+ * Даны целые числа 1≤n≤10^18 1≤n≤10^18 и 2≤m≤10^5 2≤m≤10^5, необходимо найти остаток от деления nn-го числа Фибоначчи на mm.
  *
  * @author rassoll
  * @created 19.09.2017

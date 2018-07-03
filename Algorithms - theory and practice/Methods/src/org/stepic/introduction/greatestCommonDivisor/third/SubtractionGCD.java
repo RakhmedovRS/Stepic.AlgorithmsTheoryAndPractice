@@ -3,7 +3,7 @@ package org.stepic.introduction.greatestCommonDivisor.third;
 import java.util.Scanner;
 
 /**
- * По данным двум числам 1≤a,b≤2⋅1091≤a,b≤2⋅109 найдите их наибольший общий делитель.
+ * По данным двум числам 1≤a,b≤2⋅10^9 1≤a,b≤2⋅10^9 найдите их наибольший общий делитель.
  *
  * @author rassoll
  * @created 21.09.2017

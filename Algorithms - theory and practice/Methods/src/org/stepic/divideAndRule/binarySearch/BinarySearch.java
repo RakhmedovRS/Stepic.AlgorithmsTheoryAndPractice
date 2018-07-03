@@ -1,4 +1,4 @@
-package org.stepic.divideAndRule;
+package org.stepic.divideAndRule.binarySearch;
 
 import java.util.Scanner;
 

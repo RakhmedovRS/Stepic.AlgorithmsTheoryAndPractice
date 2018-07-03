@@ -1,4 +1,4 @@
-package org.stepic.divideAndRule;
+package org.stepic.divideAndRule.mergeSort;
 
 import java.util.Scanner;
 

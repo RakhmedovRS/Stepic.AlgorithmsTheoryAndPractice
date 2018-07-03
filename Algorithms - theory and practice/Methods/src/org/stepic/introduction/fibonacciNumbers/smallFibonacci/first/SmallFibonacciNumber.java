@@ -3,7 +3,7 @@ package org.stepic.introduction.fibonacciNumbers.smallFibonacci.first;
 import java.util.Scanner;
 
 /**
- * Дано целое число 1≤n≤401≤n≤40, необходимо вычислить nn-е число Фибоначчи (напомним, что F0=0F0=0, F1=1F1=1 и Fn=Fn−1+Fn−2Fn=Fn−1+Fn−2 при n≥2n≥2).
+ * Дано целое число 1≤n≤40 1≤n≤40, необходимо вычислить nn-е число Фибоначчи (напомним, что F0=0F0=0, F1=1F1=1 и Fn=Fn−1+Fn−2Fn=Fn−1+Fn−2 при n≥2n≥2).
  *
  * @author rassoll
  * @created 19.09.2017

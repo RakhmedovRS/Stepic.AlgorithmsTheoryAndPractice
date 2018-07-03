@@ -1,4 +1,4 @@
-package org.stepic.greedyAlgorithms.huffman.task1;
+package org.stepic.greedyAlgorithms.huffmanCodes;
 
 import java.util.*;
 import java.util.stream.Collectors;

@@ -1,4 +1,4 @@
-package org.stepic.greedyAlgorithms.huffman.task2;
+package org.stepic.greedyAlgorithms.huffmanCodes;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
  * имеет минимальный возможный размер.
  *
  * В первой строке выходного файла выведите строку ss. Она должна состоять из строчных букв латинского алфавита.
- * Гарантируется, что длина правильного ответа не превосходит 104104 символов.
+ * Гарантируется, что длина правильного ответа не превосходит 10^4 символов.
  *
  * @author rassoll
  * @created 03.01.2018

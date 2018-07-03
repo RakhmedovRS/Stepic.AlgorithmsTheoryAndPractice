@@ -1,11 +1,11 @@
-package org.stepic.greedyAlgorithms.intro.task3;
+package org.stepic.greedyAlgorithms.intro;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 /**
- * По данному числу 1≤n≤1091≤n≤109 найдите максимальное число kk,
+ * По данному числу 1≤n≤10^9 1≤n≤10^9 найдите максимальное число kk,
  * для которого nn можно представить как сумму kk различных натуральных слагаемых.
  * Выведите в первой строке число kk, во второй — kk слагаемых.
  *

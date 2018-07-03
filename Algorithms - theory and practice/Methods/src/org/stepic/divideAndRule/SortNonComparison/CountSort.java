@@ -1,10 +1,10 @@
-package org.stepic.divideAndRule;
+package org.stepic.divideAndRule.SortNonComparison;
 
 import java.util.Arrays;
 import java.util.Scanner;
 
 /**
- * Первая строка содержит число 1≤n≤104, вторая — n натуральных чисел, не превышающих 10.
+ * Первая строка содержит число 1≤n≤10^4, вторая — n натуральных чисел, не превышающих 10.
  * Выведите упорядоченную по неубыванию последовательность этих чисел.
  *
  * @author rassoll
