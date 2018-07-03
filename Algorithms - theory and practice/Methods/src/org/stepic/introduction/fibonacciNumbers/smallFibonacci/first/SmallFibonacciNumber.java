@@ -1,4 +1,4 @@
-package org.stepic.fibonacciNumbers.task1.solution.second;
+package org.stepic.introduction.fibonacciNumbers.smallFibonacci.first;
 
 import java.util.Scanner;
 
@@ -12,7 +12,7 @@ import java.util.Scanner;
  */
 public class SmallFibonacciNumber
 {
-    //[Experimental feedback] Your code complexity score is 13.93 (less is better).
+    //[Experimental feedback] Your code complexity score is 5.1 (less is better).
     public static void main(String[] args)
     {
         Scanner s = new Scanner(System.in);
@@ -24,19 +24,19 @@ public class SmallFibonacciNumber
         }
         else
         {
+            int[] fibArray = new int[elementNumber];
+            fibArray[0] = 0;
+            fibArray[1] = 1;
+
             if (elementNumber > 1 && elementNumber <= 40)
             {
-                int nMunisTwoElement = 0;
-                int nMunisOneElement = 1;
-                int tempValue;
                 for (int i = 2; i < elementNumber; i++)
                 {
-                    tempValue = nMunisOneElement + nMunisTwoElement;
-                    nMunisTwoElement = nMunisOneElement;
-                    nMunisOneElement = tempValue;
+                    fibArray[i] = fibArray[i-1] + fibArray[i-2];
                 }
-                System.out.println(nMunisOneElement + nMunisTwoElement);
             }
+
+            System.out.println(fibArray[fibArray.length - 1] + fibArray[fibArray.length - 2]);
         }
     }
 }

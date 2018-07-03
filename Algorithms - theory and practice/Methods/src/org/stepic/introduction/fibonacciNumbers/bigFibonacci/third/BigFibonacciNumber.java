@@ -1,4 +1,4 @@
-package org.stepic.fibonacciNumbers.task2.solution.fourth;
+package org.stepic.introduction.fibonacciNumbers.bigFibonacci.third;
 
 import java.util.Scanner;
 
@@ -15,7 +15,7 @@ import java.util.Scanner;
  */
 public class BigFibonacciNumber
 {
-    //[Experimental feedback] Your code complexity score is 12.73 (less is better).
+    //[Experimental feedback] Your code complexity score is 12.88 (less is better).
     public static void main(String[] args)
     {
         Scanner s = new Scanner(System.in);
@@ -27,16 +27,16 @@ public class BigFibonacciNumber
         }
         else
         {
-            int[] fibArray = new int[60];
-            fibArray[0] = 0;
-            fibArray[1] = 1;
-
-            for (int i = 2; i < fibArray.length; i++)
+            int nMunisTwoElement = 0;
+            int nMunisOneElement = 1;
+            int tempValue;
+            for (int i = 2; i < elementNumber; i++)
             {
-                fibArray[i] = (fibArray[i-1] + fibArray[i-2])%10;
+                tempValue = (nMunisOneElement + nMunisTwoElement) % 10;
+                nMunisTwoElement = nMunisOneElement;
+                nMunisOneElement = tempValue;
             }
-
-            System.out.println(fibArray[elementNumber%60]);
+            System.out.println((nMunisOneElement + nMunisTwoElement)%10);
         }
     }
 }

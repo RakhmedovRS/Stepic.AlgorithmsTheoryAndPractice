@@ -1,4 +1,4 @@
-package org.stepic.fibonacciNumbers.task2.solution.five;
+package org.stepic.introduction.fibonacciNumbers.bigFibonacci.fourth;
 
 import java.util.Scanner;
 
@@ -15,35 +15,28 @@ import java.util.Scanner;
  */
 public class BigFibonacciNumber
 {
-    private static final int MOD = 10;
-
-    //[Experimental feedback] Your code complexity score is 11.53 (less is better).
+    //[Experimental feedback] Your code complexity score is 12.73 (less is better).
     public static void main(String[] args)
     {
         Scanner s = new Scanner(System.in);
-        Integer elementNumber = s.nextInt();
+        int elementNumber = s.nextInt();
 
-        System.out.println(getBigFibonacci(elementNumber));
-    }
-
-    /**
-     * Метод вычисляющий последнюю цифру elementNumber-го числа Фибоначчи.
-     *
-     * @param elementNumber номер элемента
-     * @return последняя цифра elementNumber-го числа Фибоначчи.
-     */
-    private static Integer getBigFibonacci(Integer elementNumber)
-    {
-        int a = 0;
-        int b = 1;
-
-        for (int i = 0; i < elementNumber; i++)
+        if (elementNumber == 1)
         {
-            int c = (a + b) % MOD;
-            a = b;
-            b = c;
+            System.out.println(elementNumber);
         }
+        else
+        {
+            int[] fibArray = new int[60];
+            fibArray[0] = 0;
+            fibArray[1] = 1;
 
-        return a;
+            for (int i = 2; i < fibArray.length; i++)
+            {
+                fibArray[i] = (fibArray[i-1] + fibArray[i-2])%10;
+            }
+
+            System.out.println(fibArray[elementNumber%60]);
+        }
     }
 }

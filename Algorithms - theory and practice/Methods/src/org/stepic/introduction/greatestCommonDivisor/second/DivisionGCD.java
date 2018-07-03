@@ -1,4 +1,4 @@
-package org.stepic.greatestCommonDivisor.task1.solution.second;
+package org.stepic.introduction.greatestCommonDivisor.second;
 
 import java.util.Scanner;
 

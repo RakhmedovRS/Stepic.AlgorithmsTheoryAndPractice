@@ -1,6 +1,5 @@
-package org.stepic.fibonacciNumbers.task2.solution.first;
+package org.stepic.introduction.fibonacciNumbers.bigFibonacci.second;
 
-import java.math.BigInteger;
 import java.util.Scanner;
 
 /**
@@ -10,25 +9,25 @@ import java.util.Scanner;
  * если 0≤a,b≤90≤a,b≤9 — последние цифры чисел FiFi и Fi+1Fi+1 соответственно, то (a+b)mod10(a+b)mod10 — последняя цифра числа Fi+2Fi+2.
  *
  * @author rassoll
- * @created 19.09.2017
+ * @created 21.09.2017
  * @$Author$
  * @$Revision$
  */
 public class BigFibonacciNumber
 {
-    //[Experimental feedback] Your code complexity score is 30.61 (less is better).
+    //[Experimental feedback] Your code complexity score is 26.48 (less is better).
     public static void main(String[] args)
     {
         Scanner s = new Scanner(System.in);
         int elementNumber = s.nextInt();
 
-        BigInteger[][] initMatrix = new BigInteger[2][2];
-        initMatrix[0][0] = BigInteger.ZERO;
-        initMatrix[1][0] = BigInteger.ONE;
-        initMatrix[0][1] = BigInteger.ONE;
-        initMatrix[1][1] = BigInteger.ONE;
+        int[][] initMatrix = new int[2][2];
+        initMatrix[0][0] = 0;
+        initMatrix[1][0] = 1;
+        initMatrix[0][1] = 1;
+        initMatrix[1][1] = 1;
 
-        System.out.println(getBigFibonacci(initMatrix, elementNumber).mod(BigInteger.valueOf(10L)));
+        System.out.println(getBigFibonacci(initMatrix, elementNumber));
     }
 
     /**
@@ -38,10 +37,10 @@ public class BigFibonacciNumber
      * @param pow степень
      * @return матрица возведенная в степень
      */
-    private static BigInteger getBigFibonacci(final BigInteger[][] initMatrix, int pow)
+    private static int getBigFibonacci(int[][] initMatrix, int pow)
     {
-        BigInteger[][] firstMatrix = initMatrix.clone();
-        BigInteger[][] secondMatrix = initMatrix.clone();
+        int[][] firstMatrix = initMatrix.clone();
+        int[][] secondMatrix = initMatrix.clone();
 
         while (pow != 0)
         {
@@ -64,19 +63,19 @@ public class BigFibonacciNumber
      *
      * @param firstMatrix первая матрица множитель
      * @param secondMatrix вторая матрица множитель
-     * @return произведение переданных матриц
+     * @return произведение переданных матриц по модулю 10
      */
-    private static BigInteger[][] multiplyMatrix(BigInteger[][] firstMatrix, BigInteger[][] secondMatrix)
+    private static int[][] multiplyMatrix(int[][] firstMatrix, int[][] secondMatrix)
     {
-        return new BigInteger[][]
+        return new int[][]
                 {
                         {
-                                firstMatrix[0][0].multiply(secondMatrix[0][0]).add(firstMatrix[0][1].multiply(secondMatrix[1][0])),
-                                firstMatrix[1][0].multiply(secondMatrix[0][0]).add(firstMatrix[1][1].multiply(secondMatrix[1][0]))
+                                (firstMatrix[0][0] * secondMatrix[0][0] + firstMatrix[0][1] * secondMatrix[1][0]) % 10,
+                                (firstMatrix[1][0] * secondMatrix[0][0] + firstMatrix[1][1] * secondMatrix[1][0]) % 10
                         },
                         {
-                                firstMatrix[0][0].multiply(secondMatrix[0][1]).add(firstMatrix[0][1].multiply(secondMatrix[1][1])),
-                                firstMatrix[1][0].multiply(secondMatrix[0][1]).add(firstMatrix[1][1].multiply(secondMatrix[1][1]))
+                                (firstMatrix[0][0] * secondMatrix[0][1] + firstMatrix[0][1] * secondMatrix[1][1]) % 10,
+                                (firstMatrix[1][0] * secondMatrix[0][1] + firstMatrix[1][1] * secondMatrix[1][1]) % 10
                         }
                 };
     }

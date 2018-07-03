@@ -1,4 +1,4 @@
-package org.stepic.fibonacciNumbers.task3.solution.first;
+package org.stepic.introduction.fibonacciNumbers.hugeFibonacci;
 
 import java.util.Scanner;
 
