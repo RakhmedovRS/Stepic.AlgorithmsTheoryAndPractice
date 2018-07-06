@@ -2,6 +2,12 @@ package org.stepic.basicDataStructures;
 
 import java.util.Scanner;
 
+/**
+ * @author rassoll
+ * @created 06.07.2018
+ * @$Author$
+ * @$Revision$
+ */
 public class TreeHeight
 {
 	public static void main(String[] args)
