@@ -67,14 +67,7 @@ public class ParallelProcessing
 				}
 				else if (processors[leftChildIndex].time == processors[rightChildIndex].time)
 				{
-					if (processors[leftChildIndex].number > processors[rightChildIndex].number)
-					{
-						smallestIndex = rightChildIndex;
-					}
-					else
-					{
-						smallestIndex = leftChildIndex;
-					}
+					smallestIndex = processors[leftChildIndex].number > processors[rightChildIndex].number ? rightChildIndex : leftChildIndex;
 				}
 				else
 				{
