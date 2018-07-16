@@ -25,29 +25,29 @@ public class JoinTables
 	private static class Set
 	{
 		private int[] rank;
-		private int[] set;
+		private int[] setArray;
 		private int maxRank;
 
 		Set(int tablesCount)
 		{
-			this.set = new int[tablesCount];
+			this.setArray = new int[tablesCount];
 			rank = new int[tablesCount];
 		}
 
 		void initSet(int entryCount, int position)
 		{
-			set[position] = position;
+			setArray[position] = position;
 			rank[position] = entryCount;
 			maxRank = entryCount > maxRank ? entryCount : maxRank;
 		}
 
 		int find(int i)
 		{
-			if (i != set[i])
+			if (i != setArray[i])
 			{
-				set[i] = find(set[i]);
+				setArray[i] = find(setArray[i]);
 			}
-			return set[i];
+			return setArray[i];
 		}
 
 		void union(int destination, int source)
@@ -60,7 +60,7 @@ public class JoinTables
 				return;
 			}
 
-			set[sourceID] = destinationID;
+			setArray[sourceID] = destinationID;
 			rank[destinationID] += rank[sourceID];
 			maxRank = rank[destinationID] > maxRank ? rank[destinationID] : maxRank;
 		}
