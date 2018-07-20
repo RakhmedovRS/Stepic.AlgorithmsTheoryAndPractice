@@ -8,12 +8,13 @@ import java.util.Scanner;
 
 public class RabinKarpHash
 {
-	private static final int DIVIDER = 10_007;
+	private static final short DIVIDER = 10_007;
 	private static final short BASE = 47;
-	private static int power;
+	private static final short STEPS = 6;
+
 	private static int subStringHashCode;
-	private static char[] textChars;
 	private static int patternLength;
+
 	private static int[] powers;
 
 	private static void fillPowers()
@@ -31,11 +32,11 @@ public class RabinKarpHash
 		}
 	}
 
-	private static int hashCode(String string)
+	private static int hashCode(char[] pattern)
 	{
 		int hashCode = 0;
 		int power = 0;
-		for (char ch : string.toCharArray())
+		for (char ch : pattern)
 		{
 			hashCode = (((hashCode + (ch * powers[power++])) % DIVIDER) + DIVIDER) % DIVIDER;
 		}
@@ -43,20 +44,20 @@ public class RabinKarpHash
 		return hashCode;
 	}
 
-	private static int hashCode(int i)
+	private static int hashCode(char[] text, int i)
 	{
 		int hashCode = 0;
 
-		if (i != textChars.length - patternLength)
+		if (i != text.length - patternLength)
 		{
-			hashCode = ((subStringHashCode - (textChars[i + patternLength] * power) % DIVIDER) + DIVIDER) % DIVIDER;
-			hashCode = (hashCode * BASE + textChars[i]) % DIVIDER;
+			hashCode = ((subStringHashCode - (text[i + patternLength] * powers[patternLength - 1]) % DIVIDER) + DIVIDER) % DIVIDER;
+			hashCode = (hashCode * BASE + text[i]) % DIVIDER;
 		}
 		else
 		{
 			for (int power = 0, pos = i; pos < i + patternLength; pos++, power++)
 			{
-				hashCode = (hashCode + (textChars[pos] * powers[power]) % DIVIDER) % DIVIDER;
+				hashCode = (hashCode + (text[pos] * powers[power]) % DIVIDER) % DIVIDER;
 			}
 		}
 
@@ -67,49 +68,33 @@ public class RabinKarpHash
 	{
 		try (Scanner scanner = new Scanner(System.in))
 		{
-			String pattern = scanner.next();
-			String text = scanner.next();
+			char[] pattern = scanner.next().toCharArray();
+			char[] text = scanner.next().toCharArray();
 
-			patternLength = pattern.length();
+			patternLength = pattern.length;
 			fillPowers();
-			power = powers[pattern.length() - 1];
 
-			long patternHashCode = hashCode(pattern);
-
-			textChars = text.toCharArray();
-			char[] patternChars = pattern.toCharArray();
+			int patternHashCode = hashCode(pattern);
 
 			LinkedList<Integer> matches = new LinkedList<>();
 			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(System.out));
 
-			int i = textChars.length - pattern.length();
-			while (i >= 0)
+			for (int i = text.length - pattern.length; i >= 0; i--)
 			{
-				subStringHashCode = hashCode(i);
+				subStringHashCode = hashCode(text, i);
 
 				if (patternHashCode == subStringHashCode)
 				{
 					boolean equals = true;
 
-					int steps = 0;
-					for (int pLeft = 0, pRight = patternLength - 1,
-						tLeft = i, tRight = i + pattern.length() - 1;
-						tLeft < tRight;
-						pLeft++, tLeft++, pRight--, tRight--)
+					for (int pLeft = 0, pRight = patternLength - 1, tLeft = i, tRight = i + pRight, steps = 0;
+						tLeft < tRight && steps <= STEPS; pLeft++, tLeft++, pRight--, tRight--, steps++)
 					{
-						if (steps > 6)
-						{
-							break;
-						}
-
-						if (patternChars[pLeft] != textChars[tLeft]
-							|| patternChars[pRight] != textChars[tRight])
+						if (pattern[pLeft] != text[tLeft] || pattern[pRight] != text[tRight])
 						{
 							equals = false;
 							break;
 						}
-
-						steps++;
 					}
 
 					if (equals)
@@ -117,13 +102,11 @@ public class RabinKarpHash
 						matches.addFirst(i);
 					}
 				}
-				i--;
 			}
 
 			for (Integer match : matches)
 			{
-				writer.write(match.toString());
-				writer.write(" ");
+				writer.write(String.format("%s ", match.toString()));
 			}
 
 			writer.close();
